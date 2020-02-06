@@ -10,22 +10,21 @@ namespace Lab11
     {
         public void WczytajDoPliku(Person person, string file)
         {
-            StreamWriter sw = new StreamWriter(file, true);
-
-            sw.Write($"[{person.ID}] {person.Imie} {person.Nazwisko} {person.Telefon}");
-            sw.Close();
+            using (StreamWriter sw = new StreamWriter(file, true))
+            {
+                sw.Write($"[{person.ID}] {person.Imie} {person.Nazwisko} {person.Telefon}");
+            }
         }
 
         public void WczytajTelefony(List<Person> person, string file)
         {
-            StreamWriter sw = new StreamWriter(file, false);
-
-            foreach (var item in person)
+            using (StreamWriter sw = new StreamWriter(file, false))
             {
-                sw.WriteLine($"{item.Telefon}");
+                foreach (var item in person)
+                {
+                    sw.WriteLine($"{item.Telefon}");
+                }
             }
-
-            sw.Close();
         }
 
         public void OddzielNumeryTelefonu(List<Person> person)
@@ -35,14 +34,15 @@ namespace Lab11
             {
                 file = "data\\" + i.ToString() + ".txt";
 
-                StreamWriter sw = new StreamWriter(file, false);
-                var telefony = person.Skip(i * 10).Take(10);
-
-                foreach (var item in telefony)
+                using (StreamWriter sw = new StreamWriter(file, false))
                 {
-                    sw.WriteLine($"{item.Telefon}");
+                    var telefony = person.Skip(i * 10).Take(10);
+
+                    foreach (var item in telefony)
+                    {
+                        sw.WriteLine($"{item.Telefon}");
+                    }
                 }
-                sw.Close();
             }
         }
 
@@ -54,14 +54,15 @@ namespace Lab11
             {
                 file = "literki\\" + item.ToString() + ".txt";
 
-                StreamWriter sw = new StreamWriter(file, false);
-                var data = person.Where(x => x.Imie[0] == item);
-
-                foreach (var x in data)
+                using (StreamWriter sw = new StreamWriter(file, false))
                 {
-                    sw.WriteLine($"[{x.ID}] {x.Imie} {x.Nazwisko} {x.Telefon}");
+                    var data = person.Where(x => x.Imie[0] == item);
+
+                    foreach (var x in data)
+                    {
+                        sw.WriteLine($"[{x.ID}] {x.Imie} {x.Nazwisko} {x.Telefon}");
+                    }
                 }
-                sw.Close();
             }
         }
     }
